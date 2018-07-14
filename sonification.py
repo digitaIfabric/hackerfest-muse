@@ -104,9 +104,11 @@ if __name__ == "__main__":
     dispatcher.map("/debug", print)
     dispatcher.map("/muse/elements/alpha_absolute", alpha_handler, "EEG")
     dispatcher.map("/muse/elements/beta_absolute", beta_handler, "EEG")
-    dispatcher.map("/muse/elements/beta_absolute", delta_handler, "EEG")
-    dispatcher.map("/muse/elements/beta_absolute", gamma_handler, "EEG")
+    dispatcher.map("/muse/elements/delta_absolute", delta_handler, "EEG")
+    dispatcher.map("/muse/elements/gamma_absolute", gamma_handler, "EEG")
     # dispatcher.map("/muse/elements/blink", blink_handler, "EEG")
+    dispatcher.map("/muse/elements/")
+
 
 
     server = osc_server.ThreadingOSCUDPServer(
