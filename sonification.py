@@ -69,7 +69,7 @@ def delta_handler(unused_addr, args, ch1, ch2, ch3, ch4):
         dtimer.lastDelay = time.time()
     if ch1 + ch2 + ch3 + ch4 > 2.5 and time.time() - dtimer.timer > dtimer.delay:
         print("delta")
-        client.send_message("/beep", 1174.659)
+        client.send_message("/beep", 1174.658)
         client.send_message("/beep", 587.3295)
         dtimer.timer = time.time()
 
@@ -80,7 +80,7 @@ def gamma_handler(unused_addr, args, ch1, ch2, ch3, ch4):
         gtimer.lastDelay = time.time()
     if ch1 + ch2 + ch3 + ch4 > 2.0 and time.time() - gtimer.timer > gtimer.delay:
         print("gamma")
-        client.send_message("/beep", 783.9909)
+        client.send_message("/beep", 784.9909)
         client.send_message("/beep", 391.9954)
         gtimer.timer = time.time()
 
@@ -107,6 +107,7 @@ if __name__ == "__main__":
     dispatcher.map("/muse/elements/beta_absolute", delta_handler, "EEG")
     dispatcher.map("/muse/elements/beta_absolute", gamma_handler, "EEG")
     # dispatcher.map("/muse/elements/blink", blink_handler, "EEG")
+
 
     server = osc_server.ThreadingOSCUDPServer(
         (args.ip, args.port), dispatcher)
