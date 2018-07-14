@@ -4,15 +4,22 @@ import argparse
 import math
 import numpy
 import time
+import random
 
 from pythonosc import dispatcher
 from pythonosc import osc_server
 from pythonosc import udp_client
 
 client = udp_client.SimpleUDPClient("127.0.0.1", 57120)
-atimer = time.time()
-adelay = time.sleep(5)
-btimer = time.time()
+
+class timer:
+    def __init__(self):
+        self.timer = time.time()
+        self.delay = 0.2
+        self.lastDelay = time.time()
+
+atimer = timer()
+btimer = timer()
 # dtimer = time.time()
 # gtimer = time.time()
 # ttimer = time.time()
@@ -28,23 +35,29 @@ btimer = time.time()
 
 def alpha_handler(unused_addr, args, ch1, ch2, ch3, ch4):
     global atimer
-    if ch1 + ch2 + ch3 + ch4 > 3 and time.time() - atimer > 0.2:
+    if time.time() - atimer.lastDelay > 3:
+        atimer.delay = random.uniform(0.02,1)
+        atimer.lastDelay = time.time()
+    if ch1 + ch2 + ch3 + ch4 > 3 and time.time() - atimer.timer > atimer.delay:
         print("alpha")
         client.send_message("/abeep", 65.406)
         client.send_message("/abeep", 82.407)
         client.send_message("/abeep", 97.999)
         client.send_message("/abeep", 123.47)
-        atimer = time.time()
+        atimer.timer = time.time()
 
 def beta_handler(unused_addr, args, ch1, ch2, ch3, ch4):
     global btimer
-    if ch1 + ch2 + ch3 + ch4 > 2.7 and adelay > 0.2:
+    if time.time() - btimer.lastDelay > 3:
+        btimer.delay = random.uniform(0.02,1)
+        btimer.lastDelay = time.time()
+    if ch1 + ch2 + ch3 + ch4 > 2.7 and time.time() - btimer.timer > btimer.delay:
         print("beta")
         client.send_message("/bbeep", 261.63)
         client.send_message("/bbeep", 329.63)
         client.send_message("/bbeep", 392)
         client.send_message("/bbeep", 493.88)
-        btimer = time.time()
+        btimer.timer = time.time()
 
 
 # def delta_handler(unused_addr, args, ch1, ch2, ch3, ch4):
