@@ -4,16 +4,27 @@ import argparse
 import math
 import numpy
 import time
+import random
 
 from pythonosc import dispatcher
 from pythonosc import osc_server
 from pythonosc import udp_client
 
 client = udp_client.SimpleUDPClient("127.0.0.1", 57120)
-atimer = time.time()
-btimer = time.time()
-dtimer = time.time()
-gtimer = time.time()
+
+class timer:
+    def __init__(self):
+        self.timer = time.time()
+        self.delay = 0.2
+        self.lastDelay = time.time()
+
+atimer = timer()
+btimer = timer()
+dtimer = timer()
+gtimer = timer()
+ttimer = timer()
+# dtimer = time.time()
+# gtimer = time.time()
 # ttimer = time.time()
 # blinktimer = time.time()
 # Alpha
@@ -27,39 +38,45 @@ gtimer = time.time()
 
 def alpha_handler(unused_addr, args, ch1, ch2, ch3, ch4):
     global atimer
-    if ch1 + ch2 + ch3 + ch4 > 3 and time.time() - atimer > 0.2:
+    if time.time() - atimer.lastDelay > 3:
+        atimer.delay = random.uniform(0.02,1)
+        atimer.lastDelay = time.time()
+    if ch1 + ch2 + ch3 + ch4 > 3 and time.time() - atimer.timer > atimer.delay:
         print("alpha")
-        client.send_message("/beep", 65.406)
-        client.send_message("/beep", 82.407)
-        client.send_message("/beep", 97.999)
-        client.send_message("/beep", 123.47)
-        atimer = time.time()
+        client.send_message("/abeep", 65.406)
+        client.send_message("/abeep", 82.407)
+        client.send_message("/abeep", 97.999)
+        client.send_message("/abeep", 123.47)
+        atimer.timer = time.time()
 
 def beta_handler(unused_addr, args, ch1, ch2, ch3, ch4):
     global btimer
-    if ch1 + ch2 + ch3 + ch4 > 2.7 and  time.time() - btimer > 0.2:
+    if time.time() - btimer.lastDelay > 3:
+        btimer.delay = random.uniform(0.02,1)
+        btimer.lastDelay = time.time()
+    if ch1 + ch2 + ch3 + ch4 > 2.7 and time.time() - btimer.timer > btimer.delay:
         print("beta")
-        client.send_message("/beep", 261.63)
-        client.send_message("/beep", 329.63)
-        client.send_message("/beep", 392)
-        client.send_message("/beep", 493.88)
-        btimer = time.time()
+        client.send_message("/bbeep", 261.63)
+        client.send_message("/bbeep", 329.63)
+        client.send_message("/bbeep", 392)
+        client.send_message("/bbeep", 493.88)
+        btimer.timer = time.time()
 
 def delta_handler(unused_addr, args, ch1, ch2, ch3, ch4):
     global dtimer
-    if ch1 + ch2 + ch3 + ch4 > 2.5 and time.time() - dtimer > 0.2:
+    if ch1 + ch2 + ch3 + ch4 > 2.5 and time.time() - dtimer.timer > 0.2:
         print("delta")
         client.send_message("/beep", 1174.659)
         client.send_message("/beep", 587.3295)
-        dtimer = time.time()
+        dtimer.timer = time.time()
 
 def gamma_handler(unused_addr, args, ch1, ch2, ch3, ch4):
     global gtimer
-    if ch1 + ch2 + ch3 + ch4 > 2.0 and time.time() - gtimer > 1.0:
+    if ch1 + ch2 + ch3 + ch4 > 2.0 and time.time() - gtimer.timer > 1.0:
         print("gamma")
         client.send_message("/beep", 783.9909)
         client.send_message("/beep", 391.9954)
-        gtimer = time.time()
+        gtimer.timer = time.time()
 
 # def blink_handler(unused_addr, args, blink):
 #     if blink:
