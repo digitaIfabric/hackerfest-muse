@@ -39,7 +39,7 @@ ttimer = timer()
 def alpha_handler(unused_addr, args, ch1, ch2, ch3, ch4):
     global atimer
     if time.time() - atimer.lastDelay > 3:
-        atimer.delay = random.uniform(0.02,1)
+        atimer.delay = random.uniform(0.1,0.2)
         atimer.lastDelay = time.time()
     if ch1 + ch2 + ch3 + ch4 > 3 and time.time() - atimer.timer > atimer.delay:
         print("alpha")
@@ -52,7 +52,7 @@ def alpha_handler(unused_addr, args, ch1, ch2, ch3, ch4):
 def beta_handler(unused_addr, args, ch1, ch2, ch3, ch4):
     global btimer
     if time.time() - btimer.lastDelay > 3:
-        btimer.delay = random.uniform(0.02,1)
+        btimer.delay = random.uniform(0.1,0.2)
         btimer.lastDelay = time.time()
     if ch1 + ch2 + ch3 + ch4 > 2.7 and time.time() - btimer.timer > btimer.delay:
         print("beta")
@@ -64,7 +64,10 @@ def beta_handler(unused_addr, args, ch1, ch2, ch3, ch4):
 
 def delta_handler(unused_addr, args, ch1, ch2, ch3, ch4):
     global dtimer
-    if ch1 + ch2 + ch3 + ch4 > 2.5 and time.time() - dtimer.timer > 0.2:
+    if time.time() - dtimer.lastDelay > 3:
+        dtimer.delay = random.uniform(0.2,0.3)
+        dtimer.lastDelay = time.time()
+    if ch1 + ch2 + ch3 + ch4 > 2.5 and time.time() - dtimer.timer > dtimer.delay:
         print("delta")
         client.send_message("/beep", 1174.659)
         client.send_message("/beep", 587.3295)
@@ -72,7 +75,10 @@ def delta_handler(unused_addr, args, ch1, ch2, ch3, ch4):
 
 def gamma_handler(unused_addr, args, ch1, ch2, ch3, ch4):
     global gtimer
-    if ch1 + ch2 + ch3 + ch4 > 2.0 and time.time() - gtimer.timer > 1.0:
+    if time.time() - gtimer.lastDelay > 3:
+        gtimer.delay = random.uniform(0.2,0.3)
+        gtimer.lastDelay = time.time()
+    if ch1 + ch2 + ch3 + ch4 > 2.0 and time.time() - gtimer.timer > gtimer.delay:
         print("gamma")
         client.send_message("/beep", 783.9909)
         client.send_message("/beep", 391.9954)
