@@ -5,3 +5,10 @@
 # Setup an OSC server
 
 https://github.com/ShaPOC/node-muse
+
+
+
+
+nodeMuse.connect( [127.0.0.1] , [7000] )
+
+nodeMuse.connect( 127.0.0.1 , 7000 )

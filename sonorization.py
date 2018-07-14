@@ -26,7 +26,7 @@ if __name__ == "__main__":
                         help="The ip to listen on")
     parser.add_argument("--port",
                         type=int,
-                        default=5000,
+                        default=5002,
                         help="The port to listen on")
     args = parser.parse_args()
 

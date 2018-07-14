@@ -1,0 +1,5 @@
+d1 $ s "tabla2*3"
+   # n "0 1 2 3"
+   # speed (slow 4 $ scale 0.6 18 sine)
+   # room "0.9"
+   # size "0.9"

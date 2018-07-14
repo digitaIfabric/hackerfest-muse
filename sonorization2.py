@@ -34,7 +34,26 @@ def beta_handler(unused_addr, args, ch1, ch2, ch3, ch4):
         client.send_message("/beep", 392)
         client.send_message("/beep", 493.88)
         btimer = time.time()
-        
+
+
+def delta_handler(unused_addr, args, ch1, ch2, ch3, ch4):
+    global atimer
+    if ch1 + ch2 + ch3 + ch4 > 2.5 and time.time() - atimer > 0.2:
+        print("delta")
+        # frequency_multiplier = 1000
+        client.send_message("/beep", 1174.659)
+        client.send_message("/beep", 587.3295)
+        atimer = time.time()
+
+def gamma_handler(unused_addr, args, ch1, ch2, ch3, ch4):
+    global btimer
+    if ch1 + ch2 + ch3 + ch4 > 2.3 and time.time() - btimer > 1.0:
+        print("gamma")
+        # frequency_multiplier = 2000
+        client.send_message("/beep", 783.9909)
+        client.send_message("/beep", 391.9954)
+        btimer = time.time()
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--ip",
@@ -42,7 +61,7 @@ if __name__ == "__main__":
                         help="The ip to listen on")
     parser.add_argument("--port",
                         type=int,
-                        default=5000,
+                        default=5002,
                         help="The port to listen on")
     args = parser.parse_args()
 
@@ -50,6 +69,9 @@ if __name__ == "__main__":
     dispatcher.map("/debug", print)
     dispatcher.map("/muse/elements/alpha_absolute", alpha_handler, "EEG")
     dispatcher.map("/muse/elements/beta_absolute", beta_handler, "EEG")
+    dispatcher.map("/muse/elements/beta_absolute", delta_handler, "EEG")
+    dispatcher.map("/muse/elements/beta_absolute", gamma_handler, "EEG")
+
 
     server = osc_server.ThreadingOSCUDPServer(
         (args.ip, args.port), dispatcher)
