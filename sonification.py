@@ -108,7 +108,6 @@ if __name__ == "__main__":
     dispatcher.map("/muse/elements/beta_absolute", gamma_handler, "EEG")
     # dispatcher.map("/muse/elements/blink", blink_handler, "EEG")
 
-
     server = osc_server.ThreadingOSCUDPServer(
         (args.ip, args.port), dispatcher)
     print("Serving on {}".format(server.server_address))

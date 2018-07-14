@@ -14,7 +14,7 @@
 
 ## STEP 1
 #### Connect to a Muse headset via Bluetooth and initiate a UDP session on port 5000
-`muse-io --device Muse-6F35 --osc osc.udp://localhost:5000
+`muse-io --device Muse-6F35 --osc osc.udp://localhost:5000`
 #### Replace Muse-6F35 with the name of your device (visible on the headset/bluetooth settings). You can install MuseLab or other research tools from online http://developer.choosemuse.com/sdk/android/android-api-reference
 
 ## STEP 2
