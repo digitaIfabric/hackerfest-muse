@@ -12,6 +12,18 @@ from pythonosc import udp_client
 client = udp_client.SimpleUDPClient("127.0.0.1", 57120)
 atimer = time.time()
 btimer = time.time()
+dtimer = time.time()
+gtimer = time.time()
+ttimer = time.time()
+blinktimer = time.time()
+# Alpha
+# Beta
+# Delta
+# Gamma
+# Theta
+# Mellow
+# Concentration
+# API http://developer.choosemuse.com/tools/available-data#Raw_EEG
 
 def alpha_handler(unused_addr, args, ch1, ch2, ch3, ch4):
     global atimer
@@ -37,30 +49,27 @@ def beta_handler(unused_addr, args, ch1, ch2, ch3, ch4):
 
 
 def delta_handler(unused_addr, args, ch1, ch2, ch3, ch4):
-    global atimer
-    if ch1 + ch2 + ch3 + ch4 > 2.5 and time.time() - atimer > 0.2:
+    global dtimer
+    if ch1 + ch2 + ch3 + ch4 > 2.5 and time.time() - dtimer > 0.2:
         print("delta")
         # frequency_multiplier = 1000
         client.send_message("/beep", 1174.659)
         client.send_message("/beep", 587.3295)
-        atimer = time.time()
+        dtimer = time.time()
 
 def gamma_handler(unused_addr, args, ch1, ch2, ch3, ch4):
-    global btimer
-    if ch1 + ch2 + ch3 + ch4 > 2.0 and time.time() - btimer > 1.0:
+    global gtimer
+    if ch1 + ch2 + ch3 + ch4 > 2.0 and time.time() - gtimer > 1.0:
         print("gamma")
         # frequency_multiplier = 2000
         client.send_message("/beep", 783.9909)
         client.send_message("/beep", 391.9954)
-        btimer = time.time()
+        gtimer = time.time()
 
-def blink_handler(unused_addr, args, ):
-    global btimer
-    if ch1 + ch2 + ch3 + ch4 > 2.0 and time.time() - btimer > 1.0:
+def blink_handler(unused_addr, args, blink):
+    if blink:
         print("blink")
-        # frequency_multiplier = 2000
-        client.send_message("/beep", 100)
-        btimer = time.time()
+        client.send_message("/beep", 16.35160)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -69,7 +78,7 @@ if __name__ == "__main__":
                         help="The ip to listen on")
     parser.add_argument("--port",
                         type=int,
-                        default=5002,
+                        default=5005,
                         help="The port to listen on")
     args = parser.parse_args()
 
@@ -80,8 +89,6 @@ if __name__ == "__main__":
     dispatcher.map("/muse/elements/beta_absolute", delta_handler, "EEG")
     dispatcher.map("/muse/elements/beta_absolute", gamma_handler, "EEG")
     dispatcher.map("/muse/elements/blink", blink_handler, "EEG")
-
-
 
 
     server = osc_server.ThreadingOSCUDPServer(
